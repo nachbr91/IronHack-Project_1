@@ -18,27 +18,28 @@ window.onload = () => {
   //FUNCTIONS
 
   const startGame = () => {
-      updateCanvas
+      updateCanvas()
       generateImages();
   }
 
   let backgroundImage = '';
-//   let mainCharacterImage = "";
+  let mainCharacterImage = "";
 
-  const drawImages = (backgroundImage) => {
-    ctx.drawImage(backgroundImage, 0, 0, 800, 500);
-    // ctx.drawImage(mainCharacterImage, 20, 400, 50, 100);
+  const drawImages = (backgroundImage, mainCharacterImage) => {
+    ctx.drawImage(backgroundImage, 0, 0, 800, 450);
+    ctx.drawImage(mainCharacterImage, 20, 400, 50, 100);
   };
 
   const generateImages = () => {
     backgroundImage = new Image();
 
-    backgroundImage.src = '../images/backgroundImg2.png';
+    backgroundImage.src = '../images/backgroundImg2_(3).png';
 
     backgroundImage.onload = () => {
       counterForLoadedImages++;
       if (counterForLoadedImages === totalOfImages) {
-        drawImages(backgroundImage);
+        drawImages(backgroundImage, mainCharacterImage);
+
       }
     };
   };

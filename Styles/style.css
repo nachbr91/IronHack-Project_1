@@ -5,9 +5,13 @@ html {
 
 body {
  font-family: 'Press Start 2P', cursive;
+ background-image: url('/images/css_background.jpeg');
+ background-size: cover;
+ background-repeat: no-repeat;
 }
 
 h1 {
+    color: #FFF;
     text-align: center;
     margin-top: 30px;
     margin-bottom: 20px;
