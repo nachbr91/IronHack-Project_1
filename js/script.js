@@ -44,13 +44,22 @@ window.onload = () => {
   class Enemy {
     constructor() {
       this.x = 800;
-      this.y = Math.floor(Math.random() * 321) + 149; // Random 'y' position between 149 and 320
+      this.y = Math.floor(Math.random() * 321); // Random 'y' position between 149 and 320
       this.speed = 0;
-      this.width = 80;
-      this.height = 140;
+      this.width = 59;
+      this.height = 119;
     };
-    updatePosition ()  {
+    updatePosition()  {
       this.x -= this.speed;
+    };
+
+    checkForBoundries() {
+      if (this.y < 150) {
+        this.y = 150;
+      };
+      if (this.y > 320) {
+        this.y = 320;
+      };
     };
   };
 
@@ -95,7 +104,7 @@ window.onload = () => {
       updateCanvas();
       const createEnemies = setInterval(() => {
         arrayOfEnemies.push(new Enemy());
-      }, 4500);
+      }, 3000);
   };
 
   let backgroundImage = '';
@@ -159,6 +168,7 @@ window.onload = () => {
     mainCharacter.updatePosition();
     mainCharacter.checkForBoundries();
     enemy.updatePosition();
+    enemy.checkForBoundries();
     if (counterForLoadedImages === totalOfImages) {
         drawImages(backgroundImage, mainCharacterImage);
     };
