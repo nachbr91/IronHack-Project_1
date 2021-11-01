@@ -33,7 +33,7 @@ window.onload = () => {
   const generateImages = () => {
     backgroundImage = new Image();
 
-    backgroundImage.src = '../images/backgroundImg2_(3).png';
+    backgroundImage.src = '../images/canvas_background.png';
 
     backgroundImage.onload = () => {
       counterForLoadedImages++;

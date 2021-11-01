@@ -17,10 +17,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-canvas {
-    border: 1px solid black;
-}
-
 .canvas {
     display: flex;
     justify-content: center;
