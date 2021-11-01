@@ -4,7 +4,7 @@ window.onload = () => {
   const ctx = canvas.getContext('2d');
 
   //VARIABLES
-  const totalOfImages = 2;
+  const totalOfImages = 3; // Add +1 everytime I create a new character
   let counterForLoadedImages = 0;
 
 
@@ -19,7 +19,6 @@ window.onload = () => {
       this.width = 80;
       this.height = 140;
     };
-
     updatePosition ()  {
       this.x += this.speedX;
       this.y += this.speedY;
@@ -42,7 +41,21 @@ window.onload = () => {
 
   };
 
+  class Enemy {
+    constructor() {
+      this.x = 800;
+      this.y = Math.floor(Math.random() * 321) + 149; // Random 'y' position between 149 and 320
+      this.speed = 0;
+      this.width = 80;
+      this.height = 140;
+    };
+    updatePosition ()  {
+      this.x -= this.speed;
+    };
+  };
+
   const mainCharacter = new MainCharacter(); // Create const of MainCharacter class
+  const enemy = new Enemy(); // Create const of  Enemy class
 
 
 
@@ -75,13 +88,19 @@ window.onload = () => {
 
   //FUNCTIONS
 
+  const arrayOfEnemies = [];
+
   const startGame = () => {
       generateImages();
-      updateCanvas()
+      updateCanvas();
+      const createEnemies = setInterval(() => {
+        arrayOfEnemies.push(new Enemy());
+      }, 4500);
   };
 
   let backgroundImage = '';
   let mainCharacterImage = '';
+  let enemyImg = '';
 
   const drawImages = (backgroundImage, mainCharacterImage) => {
     ctx.drawImage(backgroundImage, 0, 0, 800, 450);
@@ -91,32 +110,60 @@ window.onload = () => {
   const generateImages = () => {
     backgroundImage = new Image();
     mainCharacterImage = new Image();
+    enemyImg = new Image();
 
-    backgroundImage.src = '../images/canvas_background.png';
+    backgroundImage.src = '/images/canvas_background.png';
     mainCharacterImage.src = '/images/main_character_img/stand_1.png';
+    enemyImg.src = '/images/enemy1_img/enemy1_1.png';
 
     backgroundImage.onload = () => {
       counterForLoadedImages++;
       if (counterForLoadedImages === totalOfImages) {
-        drawImages(backgroundImage, mainCharacterImage);
+        drawImages(backgroundImage, mainCharacterImage, enemyImg);
       };
     };
 
     mainCharacterImage.onload = () => {
       counterForLoadedImages++;
       if (counterForLoadedImages === totalOfImages) {
-        drawImages(backgroundImage, mainCharacterImage);
+        drawImages(backgroundImage, mainCharacterImage, enemyImg);
       };
     };
 
-  };
+    enemyImg.onload = () => {
+      counterForLoadedImages++;
+      if (counterForLoadedImages === totalOfImages) {
+        drawImages(backgroundImage, mainCharacterImage, enemyImg);
+      };
+    };
+
+
+  }
+
+    const updateEnemyPosition = () => {
+      arrayOfEnemies.forEach((enemy) => {
+        enemy.speed = 0.7;
+        enemy.x -= enemy.speed;
+      });
+    };
+
+    const drawEnemies = () => {
+      arrayOfEnemies.forEach((enemy) => {
+        ctx.drawImage(enemyImg, enemy.x, enemy.y, enemy.width, enemy.height);
+      });
+    };
+
+
 
   const updateCanvas = () => {
     mainCharacter.updatePosition();
     mainCharacter.checkForBoundries();
+    enemy.updatePosition();
     if (counterForLoadedImages === totalOfImages) {
         drawImages(backgroundImage, mainCharacterImage);
-    }
+    };
+    updateEnemyPosition();
+    drawEnemies();
     requestAnimationFrame(updateCanvas);
   };
 
