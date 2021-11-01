@@ -54,12 +54,27 @@ window.onload = () => {
     updatePosition()  {
       this.x -= this.speed;
     };
+  };
 
+  //Array de enemigos + personaje 
 
+  class Bullet  {
+    constructor() {
+      this.x = 0;
+      this.y = 0;
+      this.speed = 0;
+      this.width = 0;
+      this.height = 0;
+    };
+
+    updatePosition() {
+      this.x += this.speed;
+    }
   };
 
   const mainCharacter = new MainCharacter(); // Create const of MainCharacter class
-  const enemy = new Enemy(); // Create const of  Enemy class
+  // const enemy = new Enemy(); // Create const of Enemy class
+  const bullet = new Bullet(); // Create const of Bullet class
 
 
 
@@ -88,6 +103,11 @@ window.onload = () => {
     };
   });
 
+  document.addEventListener('keypress', (event) => {
+    if (event.key === ('s')) {
+      bullet.speed = 10;
+    };
+  });
 
 
   //FUNCTIONS
@@ -96,10 +116,10 @@ window.onload = () => {
 
   const startGame = () => {
       generateImages();
-      updateCanvas();
       const createEnemies = setInterval(() => {
         arrayOfEnemies.push(new Enemy());
       }, 2500);
+      updateCanvas();
   };
 
   let backgroundImage = '';
@@ -144,6 +164,8 @@ window.onload = () => {
 
   };
 
+  
+
     const updateEnemyPosition = () => {
       arrayOfEnemies.forEach((enemy) => {
         enemy.speed = 1.5;
@@ -160,9 +182,13 @@ window.onload = () => {
 
 
   const updateCanvas = () => {
+
+
     mainCharacter.updatePosition();
     mainCharacter.checkForBoundries();
-    enemy.updatePosition();
+    // enemy.updatePosition();
+
+
     if (counterForLoadedImages === totalOfImages) {
         drawImages(backgroundImage, mainCharacterImage);
     };
