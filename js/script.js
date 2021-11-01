@@ -19,6 +19,7 @@ window.onload = () => {
       this.width = 80;
       this.height = 140;
     };
+
     updatePosition ()  {
       this.x += this.speedX;
       this.y += this.speedY;
@@ -44,23 +45,17 @@ window.onload = () => {
   class Enemy {
     constructor() {
       this.x = 800;
-      this.y = Math.floor(Math.random() * 321); // Random 'y' position between 149 and 320
+      this.y = Math.floor(Math.random() * 168) + 152; // Random 'y' position between 152 and 320
       this.speed = 0;
       this.width = 59;
       this.height = 119;
     };
+
     updatePosition()  {
       this.x -= this.speed;
     };
 
-    checkForBoundries() {
-      if (this.y < 150) {
-        this.y = 150;
-      };
-      if (this.y > 320) {
-        this.y = 320;
-      };
-    };
+
   };
 
   const mainCharacter = new MainCharacter(); // Create const of MainCharacter class
@@ -104,7 +99,7 @@ window.onload = () => {
       updateCanvas();
       const createEnemies = setInterval(() => {
         arrayOfEnemies.push(new Enemy());
-      }, 3000);
+      }, 2500);
   };
 
   let backgroundImage = '';
@@ -147,11 +142,11 @@ window.onload = () => {
     };
 
 
-  }
+  };
 
     const updateEnemyPosition = () => {
       arrayOfEnemies.forEach((enemy) => {
-        enemy.speed = 0.7;
+        enemy.speed = 1.5;
         enemy.x -= enemy.speed;
       });
     };
@@ -168,7 +163,6 @@ window.onload = () => {
     mainCharacter.updatePosition();
     mainCharacter.checkForBoundries();
     enemy.updatePosition();
-    enemy.checkForBoundries();
     if (counterForLoadedImages === totalOfImages) {
         drawImages(backgroundImage, mainCharacterImage);
     };
@@ -176,6 +170,7 @@ window.onload = () => {
     drawEnemies();
     requestAnimationFrame(updateCanvas);
   };
+
 
 
 };
