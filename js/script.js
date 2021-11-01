@@ -23,11 +23,11 @@ window.onload = () => {
   }
 
   let backgroundImage = '';
-  let mainCharacterImage = "";
+  // let mainCharacterImage = '';
 
   const drawImages = (backgroundImage, mainCharacterImage) => {
     ctx.drawImage(backgroundImage, 0, 0, 800, 450);
-    ctx.drawImage(mainCharacterImage, 20, 400, 50, 100);
+    ctx.fillRect(20, 200, 50, 100) // Main character container test. It would be replaced by mainCharacterImg
   };
 
   const generateImages = () => {
