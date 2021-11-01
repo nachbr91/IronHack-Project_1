@@ -18,13 +18,29 @@ window.onload = () => {
       this.speedY = 0;
       this.width = 80;
       this.height = 140;
-    }
+    };
 
     updatePosition ()  {
       this.x += this.speedX;
       this.y += this.speedY;
-    }
-  }
+    };
+
+    checkForBoundries() {
+      if  (this.x < -5) {
+        this.x = -5;
+      };
+      if (this.x > 728) {
+        this.x = 728;
+      };
+      if (this.y < 150 ) {
+        this.y = 150;
+      };
+      if (this.y > 320) {
+        this.y = 320;
+      };
+    };
+
+  };
 
   const mainCharacter = new MainCharacter(); // Create const of MainCharacter class
 
@@ -97,6 +113,7 @@ window.onload = () => {
 
   const updateCanvas = () => {
     mainCharacter.updatePosition();
+    mainCharacter.checkForBoundries();
     if (counterForLoadedImages === totalOfImages) {
         drawImages(backgroundImage, mainCharacterImage);
     }
