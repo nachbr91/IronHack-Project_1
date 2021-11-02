@@ -2,8 +2,8 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const totalOfImages = 3; // Add +1 everytime I create a new character
-let counterForLoadedImages = 0;
+// const totalOfImages = 3; // Add +1 everytime I create a new character
+// let counterForLoadedImages = 0;
 
 const arrayOfEnemies = [];
 
@@ -14,6 +14,7 @@ let mainCharacterImage = "";
 let enemyImg = "";
 
 let mainCharacter;
+let enemy;
 
 backgroundImage = new Image();
 backgroundImage.src = "/images/canvas_background.png";
@@ -40,7 +41,6 @@ enemyImg.src = "/images/enemy1_img/enemy1_1.png";
 const startGame = () => {
   // generateImages();
   createEnemies();
-
   updateCanvas();
 };
 
@@ -96,35 +96,27 @@ const updateEnemyPosition = () => {
 //   });
 // };
 
-
 // LOOP PRINCIPAL DE MI JUEGO ***************
+
 const updateCanvas = () => {
-  ctx.drawImage(backgroundImage, 0, 0, 800, 450); // pintar el background
+  ctx.drawImage(backgroundImage, 0, 0, 800, 450); // draw background
 
-  // mainCharacter.draw();
-  // mainCharacter.updatePosition(); //update pos pj
-  mainCharacter.checkForBoundries();
-
-  // updateEnemyPosition();
-  // drawEnemies();
-
-  arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort((a,b) => a.y - b.y) // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
+  arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort(
+    (a, b) => a.y - b.y
+  ); // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
   arrayOfCharacters.forEach((character) => {
-    character.draw()
-    character.updatePosition()
+    character.draw();
+    character.updatePosition();
   });
 
-  // mainCharacter.checkForBoundries();
-  // enemy.updatePosition();
-
-  // if (counterForLoadedImages === totalOfImages) {
-  //   drawImages(backgroundImage, mainCharacterImage);
-  // }
+  mainCharacter.checkForBoundries();
+  enemy.checkMainCharacterCollision();
 
   requestAnimationFrame(updateCanvas);
 };
 
-//CLASES *******************
+//CLASSES *******************
+
 class MainCharacter {
   constructor() {
     this.x = 50;
@@ -133,6 +125,7 @@ class MainCharacter {
     this.speedY = 0;
     this.width = 80;
     this.height = 140;
+    this.dead = false;
   }
 
   moveLeft() {
@@ -191,7 +184,10 @@ class MainCharacter {
       this.y = 320;
     }
   }
+
+
 }
+mainCharacter = new MainCharacter(); // Create const of MainCharacter class
 
 class Enemy {
   constructor(image) {
@@ -210,16 +206,27 @@ class Enemy {
   draw() {
     ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
+
+  checkMainCharacterCollision() {
+    arrayOfEnemies.forEach((enemy) => {
+      if (
+        (enemy.x +  40) < mainCharacter.x + mainCharacter.width &&
+        enemy.x + enemy.width > (mainCharacter.x + 80) &&
+        (enemy.y + 120) < mainCharacter.y + mainCharacter.height &&
+        enemy.height + enemy.y > (mainCharacter.y + 125)
+      ) {
+        console.log('You are dead!')
+        // pistachio.eaten = true;
+        // score++;
+        // document.getElementById("score-counter").innerText = score;
+        // console.log (score)
+      }
+    });
+  };
+
+
 }
-
-//Array de enemigos + personaje
-
-
-
-//  arrayOfCharacters.forEach((updatePosition) => {
-//    if (mainCharacter.updatePosition()) {}
-//  })
-
+enemy = new Enemy();
 
 class Bullet {
   constructor() {
@@ -233,12 +240,13 @@ class Bullet {
   updatePosition() {
     this.x += this.speed;
   }
+
+
 }
 
-//EVENTOS - > window.onload
+//EVENT LISTENERS - > window.onload
+
 window.onload = () => {
-  mainCharacter = new MainCharacter(); // Create const of MainCharacter class
-  enemy = new Enemy();
   // const bullet = new Bullet(); // Create const of Bullet class
 
   document.getElementById("start-button").onclick = () => {
@@ -264,7 +272,7 @@ window.onload = () => {
       mainCharacter.stop("x");
     } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
       mainCharacter.stop("y");
-    } else if (event.key === 's') {
+    } else if (event.key === "s") {
       // bullet.speed = 0;
     }
   });
