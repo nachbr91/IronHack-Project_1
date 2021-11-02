@@ -7,6 +7,8 @@ let counterForLoadedImages = 0;
 
 const arrayOfEnemies = [];
 
+let arrayOfCharacters = [];
+
 let backgroundImage = "";
 let mainCharacterImage = "";
 let enemyImg = "";
@@ -88,24 +90,29 @@ const updateEnemyPosition = () => {
   });
 };
 
-const drawEnemies = () => {
-  arrayOfEnemies.forEach((enemy) => {
-    enemy.draw();
-  });
-};
+// const drawEnemies = () => {
+//   arrayOfEnemies.forEach((enemy) => {
+//     enemy.draw();
+//   });
+// };
 
-//LOOP PRINCIPAL DE MI JUEGO
+
+// LOOP PRINCIPAL DE MI JUEGO ***************
 const updateCanvas = () => {
   ctx.drawImage(backgroundImage, 0, 0, 800, 450); // pintar el background
 
-  mainCharacter.draw();
-  mainCharacter.updatePosition(); //update pos pj
+  // mainCharacter.draw();
+  // mainCharacter.updatePosition(); //update pos pj
   mainCharacter.checkForBoundries();
 
-  updateEnemyPosition();
-  drawEnemies();
+  // updateEnemyPosition();
+  // drawEnemies();
 
-  // [...arrayOfEnemies, mainCharacter].sort((a,b) => a.y - b.y) // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
+  arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort((a,b) => a.y - b.y) // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
+  arrayOfCharacters.forEach((character) => {
+    character.draw()
+    character.updatePosition()
+  });
 
   // mainCharacter.checkForBoundries();
   // enemy.updatePosition();
@@ -131,12 +138,16 @@ class MainCharacter {
   moveLeft() {
     if (this.x >= -5) {
       this.speedX = -3;
+    } else {
+      this.speedX = 0;
     }
   }
 
   moveRight() {
     if (this.x < 728) {
       this.speedX = 3;
+    } else {
+      this.speedX = 0;
     }
   }
 
@@ -203,9 +214,12 @@ class Enemy {
 
 //Array de enemigos + personaje
 
-const arrayOfCharacters = [
 
-]
+
+//  arrayOfCharacters.forEach((updatePosition) => {
+//    if (mainCharacter.updatePosition()) {}
+//  })
+
 
 class Bullet {
   constructor() {
@@ -224,6 +238,7 @@ class Bullet {
 //EVENTOS - > window.onload
 window.onload = () => {
   mainCharacter = new MainCharacter(); // Create const of MainCharacter class
+  enemy = new Enemy();
   // const bullet = new Bullet(); // Create const of Bullet class
 
   document.getElementById("start-button").onclick = () => {
@@ -249,6 +264,8 @@ window.onload = () => {
       mainCharacter.stop("x");
     } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
       mainCharacter.stop("y");
+    } else if (event.key === 's') {
+      // bullet.speed = 0;
     }
   });
 };
