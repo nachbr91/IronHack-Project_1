@@ -3,15 +3,15 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const arrayOfEnemies = [];
+let arrayOfEnemies = [];
 let arrayOfCharacters = [];
 
 let arrayOfBullets = [];
 
-let backgroundImage = '';
-let mainCharacterImage = '';
-let enemyImg = '';
-let bulletImage = ''
+let backgroundImage = "";
+let mainCharacterImage = "";
+let enemyImg = "";
+let bulletImage = "";
 
 let mainCharacter;
 let enemy;
@@ -26,20 +26,9 @@ enemyImg = new Image();
 enemyImg.src = "/images/enemy1_img/enemy1_1.png";
 
 bulletImage = new Image();
-bulletImage.src = '/images/bullet.png';
+bulletImage.src = "/images/bullet.png";
 
 endGame = false;
-
-// const drawImages = (backgroundImage, mainCharacterImage) => {
-//   ctx.drawImage(backgroundImage, 0, 0, 800, 450);
-//   ctx.drawImage(
-//     mainCharacterImage,
-//     mainCharacter.x,
-//     mainCharacter.y,
-//     mainCharacter.width,
-//     mainCharacter.height
-//   );
-// };
 
 //FUNCIONES ****************
 
@@ -53,14 +42,17 @@ const createEnemies = () => {
   const createEnemy = setInterval(() => {
     arrayOfEnemies.push(new Enemy(enemyImg));
   }, 1500);
-  // const createEnemies = setInterval(() => {
-  //   arrayOfEnemies.push(new Enemy(enemyImg2));
-  // }, 4500);
 };
 
 const updateEnemyPosition = () => {
   arrayOfEnemies.forEach((enemy) => {
     enemy.updatePosition();
+  });
+};
+
+const deleteEnemies = () => {
+  arrayOfEnemies = arrayOfEnemies.filter((enemy) => {
+    return !enemy.toDelete;
   });
 };
 
@@ -72,9 +64,9 @@ const updateBulletPosition = () => {
 
 const deleteBullet = () => {
   arrayOfBullets = arrayOfBullets.filter((bullet) => {
-    !bullet.toDelete;
-  })
-}
+    return !bullet.toDelete;
+  });
+};
 
 const clearCanvas = () => {
   ctx.clearRect(0, 0, 800, 450);
@@ -88,39 +80,40 @@ const drawGameOver = () => {
   ctx.fillText("GAME OVER", 400, 225);
 };
 
-// const drawEnemies = () => {
-//   arrayOfEnemies.forEach((enemy) => {
-//     enemy.draw();
-//   });
-// };
-
 // MAIN LOOP OF THE VIDEO GAME ***************
 
 const updateCanvas = () => {
   if (!endGame) {
     ctx.drawImage(backgroundImage, 0, 0, 800, 450); // draw background
+
     arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort(
       (a, b) => a.y - b.y
     ); // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
+
     arrayOfCharacters.forEach((character) => {
       character.draw();
       character.updatePosition();
     });
+
     arrayOfBullets.forEach((bullet) => {
       bullet.draw();
       bullet.updatePosition();
-    })
+    });
 
-    // arrayOfBullets.forEach((bullet) => {
-    //   if (!bullet.shoot) {
-    //     bullet.draw();
-    //     bullet.updatePosition(); 
-    //   }
-    // });
+    arrayOfBullets.forEach((bullet) => {
+      arrayOfEnemies.forEach((enemy) => {
+        bullet.checkBulletCollision(enemy);
+      });
+    });
 
     mainCharacter.checkForBoundries();
-    // mainCharacter.checkBulletCollision();
+
     enemy.checkMainCharacterCollision();
+
+    deleteEnemies();
+
+    deleteBullet();
+
     requestAnimationFrame(updateCanvas);
   } else {
     drawGameOver();
@@ -137,7 +130,6 @@ class MainCharacter {
     this.speedY = 0;
     this.width = 80;
     this.height = 140;
-    // this.dead = false;
   }
 
   moveLeft() {
@@ -196,22 +188,6 @@ class MainCharacter {
       this.y = 320;
     }
   }
-
-  // checkBulletCollision() {
-  //   arrayOfEnemies.forEach((enemy) => {
-  //     if (
-  //       enemy.x + 40 < mainCharacter.x + mainCharacter.width &&
-  //       enemy.x + enemy.width > mainCharacter.x + 80 &&
-  //       enemy.y + 120 < mainCharacter.y + mainCharacter.height &&
-  //       enemy.height + enemy.y > mainCharacter.y + 125
-  //     ) {
-  //       enemy.dead = true;
-  //       score++;
-  //       document.getElementById("score.counter").innerText = score;
-  //       console.log(score);
-  //     }
-  //   });
-  // }
 }
 mainCharacter = new MainCharacter(); // Create const of MainCharacter class
 
@@ -223,7 +199,7 @@ class Enemy {
     this.width = 59;
     this.height = 119;
     this.image = image;
-    this.dead = false;
+    this.toDelete = false;
   }
 
   updatePosition() {
@@ -244,9 +220,9 @@ class Enemy {
       ) {
         // deadSound.play
         endGame = true;
-      };
+      }
     });
-  };
+  }
 }
 enemy = new Enemy();
 
@@ -257,7 +233,7 @@ class Bullet {
     this.speed = 10;
     this.width = 20;
     this.height = 30;
-    this.toDelete = false
+    this.toDelete = false;
   }
 
   updatePosition() {
@@ -270,12 +246,24 @@ class Bullet {
   draw() {
     arrayOfBullets.forEach((bullet) => {
       ctx.drawImage(bulletImage, this.x, this.y, this.width, this.height);
-    })
+    });
   }
 
+  checkBulletCollision(enemy) {
+    if (
+      this.x < enemy.x + enemy.width &&
+      this.x + this.width > enemy.x &&
+      this.y < enemy.y + enemy.height &&
+      this.height + this.y > enemy.y
+    ) {
+      enemy.toDelete = true;
+      this.toDelete = true;
+      // score++;
+      // document.getElementById("score.counter").innerText = score;
+      // console.log(score);
+    }
+  }
 }
-
-bullet = new Bullet();
 
 //EVENT LISTENERS - > window.onload
 
@@ -295,17 +283,14 @@ window.onload = () => {
       mainCharacter.moveDown();
     } else if (event.key === "s") {
       arrayOfBullets.push(new Bullet());
-      }
     }
-  );
+  });
 
   document.addEventListener("keyup", (event) => {
     if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
       mainCharacter.stop("x");
     } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
       mainCharacter.stop("y");
-    } else if (event.key === "s") {
-      // bullet.speed = 0;
     }
   });
 };
