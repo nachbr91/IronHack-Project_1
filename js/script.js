@@ -32,9 +32,30 @@ enemyImg.src = "../images/enemy1_img/enemy1_1.png";
 bulletImage = new Image();
 bulletImage.src = "../images/bullet.png";
 
+const soundTrack = new Audio('../sound/soundtrack.mp3');
+soundTrack.volume = 0.2;
+soundTrack.preload = 'auto';
+soundTrack.load();
+
+const gameOverSound = new Audio('../sound/game_over.mp3');
+gameOverSound.volume = 0.2;
+gameOverSound.preload = 'auto';
+gameOverSound.load();
+
+const shootSound = new Audio('../sound/shoot.wav');
+shootSound.volume = 0.2;
+shootSound.preload = 'auto';
+shootSound.load();
+
+const damageSound = new Audio('../sound/damage_sound.wav');
+damageSound.volume = 0.5;
+damageSound.preload = 'auto';
+damageSound.load();
+
 //FUNCTIONS ****************
 
 const startGame = () => {
+  soundTrack.play();
   createEnemies();
   updateCanvas();
 };
@@ -42,7 +63,7 @@ const startGame = () => {
 const createEnemies = () => {
   const createEnemy = setInterval(() => {
     arrayOfEnemies.push(new Enemy(enemyImg));
-  }, 1500);
+  }, 1000);
 };
 
 const updateEnemyPosition = () => {
@@ -75,6 +96,8 @@ const clearCanvas = () => {
 
 const drawGameOver = () => {
   clearCanvas();
+  soundTrack.pause();
+  gameOverSound.play();
   ctx.fillStyle = 'white';
   ctx.font = '50px monospace';
   ctx.textAlign = 'center';
@@ -146,7 +169,7 @@ class MainCharacter {
 
   moveLeft() {
     if (this.x >= -5) {
-      this.speedX = -3;
+      this.speedX = -5;
     } else {
       this.speedX = 0;
     }
@@ -154,7 +177,7 @@ class MainCharacter {
 
   moveRight() {
     if (this.x < 728) {
-      this.speedX = 3;
+      this.speedX = 5;
     } else {
       this.speedX = 0;
     }
@@ -162,13 +185,13 @@ class MainCharacter {
 
   moveUp() {
     if (this.y > 150) {
-      this.speedY = -3;
+      this.speedY = -5;
     }
   }
 
   moveDown() {
     if (this.y < 320) {
-      this.speedY = 3;
+      this.speedY = 5;
     }
   }
 
@@ -207,7 +230,7 @@ class Enemy {
   constructor(image) {
     this.x = 800;
     this.y = Math.floor(Math.random() * 167) + 153; // Random 'y' position between 153 and 320
-    this.speed = Math.floor(Math.random() * 5) + 2;
+    this.speed = Math.floor(Math.random() * 8) + 5;
     this.width = 59;
     this.height = 119;
     this.image = image;
@@ -230,7 +253,6 @@ class Enemy {
         enemy.y + 120 < mainCharacter.y + mainCharacter.height &&
         enemy.height + enemy.y > mainCharacter.y + 125
       ) {
-        // deadSound.play
         endGame = true;
       }
     });
@@ -268,6 +290,7 @@ class Bullet {
       this.y < enemy.y + enemy.height &&
       this.height + this.y > enemy.y
     ) {
+      damageSound.play();
       enemy.toDelete = true;
       this.toDelete = true;
       score++;
@@ -293,6 +316,7 @@ window.onload = () => {
       mainCharacter.moveDown();
     } else if (event.key === "s") {
       arrayOfBullets.push(new Bullet());
+      shootSound.play();
     }
   });
 
