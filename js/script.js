@@ -16,6 +16,8 @@ let bulletImage = "";
 let mainCharacter;
 let enemy;
 
+let score = 0;
+
 backgroundImage = new Image();
 backgroundImage.src = "/images/canvas_background.png";
 
@@ -80,6 +82,13 @@ const drawGameOver = () => {
   ctx.fillText("GAME OVER", 400, 225);
 };
 
+const drawScore = () => {
+  ctx.font = '30px Arial';
+  ctx.fillStyle = 'white';
+  ctx.textAlign = 'center'
+  ctx.fillText('Score:' + score, 650, 80);
+}
+
 // MAIN LOOP OF THE VIDEO GAME ***************
 
 const updateCanvas = () => {
@@ -113,6 +122,8 @@ const updateCanvas = () => {
     deleteEnemies();
 
     deleteBullet();
+
+    drawScore();
 
     requestAnimationFrame(updateCanvas);
   } else {
@@ -258,7 +269,7 @@ class Bullet {
     ) {
       enemy.toDelete = true;
       this.toDelete = true;
-      // score++;
+      score++;
       // document.getElementById("score.counter").innerText = score;
       // console.log(score);
     }
