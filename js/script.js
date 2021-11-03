@@ -1,9 +1,7 @@
 //VARIABLES ****************
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-
-// const totalOfImages = 3; // Add +1 everytime I create a new character
-// let counterForLoadedImages = 0;
 
 const arrayOfEnemies = [];
 
@@ -25,6 +23,8 @@ mainCharacterImage.src = "/images/main_character_img/stand_1.png";
 enemyImg = new Image();
 enemyImg.src = "/images/enemy1_img/enemy1_1.png";
 
+endGame = false;
+
 // const drawImages = (backgroundImage, mainCharacterImage) => {
 //   ctx.drawImage(backgroundImage, 0, 0, 800, 450);
 //   ctx.drawImage(
@@ -44,41 +44,10 @@ const startGame = () => {
   updateCanvas();
 };
 
-// const generateImages = () => {
-//   backgroundImage = new Image();
-//   mainCharacterImage = new Image();
-//   enemyImg = new Image();
-
-//   backgroundImage.src = "/images/canvas_background.png";
-//   mainCharacterImage.src = "/images/main_character_img/stand_1.png";
-//   enemyImg.src = "/images/enemy1_img/enemy1_1.png";
-
-//   backgroundImage.onload = () => {
-//     counterForLoadedImages++;
-//     if (counterForLoadedImages === totalOfImages) {
-//       drawImages(backgroundImage, mainCharacterImage, enemyImg);
-//     }
-//   };
-
-//   mainCharacterImage.onload = () => {
-//     counterForLoadedImages++;
-//     if (counterForLoadedImages === totalOfImages) {
-//       drawImages(backgroundImage, mainCharacterImage, enemyImg);
-//     }
-//   };
-
-//   enemyImg.onload = () => {
-//     counterForLoadedImages++;
-//     if (counterForLoadedImages === totalOfImages) {
-//       drawImages(backgroundImage, mainCharacterImage, enemyImg);
-//     }
-//   };
-// };
-
 const createEnemies = () => {
   const createEnemy = setInterval(() => {
     arrayOfEnemies.push(new Enemy(enemyImg));
-  }, 2500);
+  }, 1500);
   // const createEnemies = setInterval(() => {
   //   arrayOfEnemies.push(new Enemy(enemyImg2));
   // }, 4500);
@@ -90,29 +59,43 @@ const updateEnemyPosition = () => {
   });
 };
 
+const clearCanvas = () => {
+  ctx.clearRect(0, 0, 800, 450);
+};
+
+const drawGameOver = () => {
+  clearCanvas();
+  ctx.fillStyle = "white";
+  ctx.font = "100px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("GAME OVER", 400, 225);
+};
+
 // const drawEnemies = () => {
 //   arrayOfEnemies.forEach((enemy) => {
 //     enemy.draw();
 //   });
 // };
 
-// LOOP PRINCIPAL DE MI JUEGO ***************
+// MAIN LOOP OF THE VIDEO GAME ***************
 
 const updateCanvas = () => {
-  ctx.drawImage(backgroundImage, 0, 0, 800, 450); // draw background
-
-  arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort(
-    (a, b) => a.y - b.y
-  ); // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
-  arrayOfCharacters.forEach((character) => {
-    character.draw();
-    character.updatePosition();
-  });
-
-  mainCharacter.checkForBoundries();
-  enemy.checkMainCharacterCollision();
-
-  requestAnimationFrame(updateCanvas);
+  if (!endGame) {
+    ctx.drawImage(backgroundImage, 0, 0, 800, 450); // draw background
+    arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort(
+      (a, b) => a.y - b.y
+    ); // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
+    arrayOfCharacters.forEach((character) => {
+      character.draw();
+      character.updatePosition();
+    });
+    mainCharacter.checkForBoundries();
+    // mainCharacter.checkBulletCollision();
+    enemy.checkMainCharacterCollision();
+    requestAnimationFrame(updateCanvas);
+  } else {
+    drawGameOver();
+  }
 };
 
 //CLASSES *******************
@@ -125,7 +108,7 @@ class MainCharacter {
     this.speedY = 0;
     this.width = 80;
     this.height = 140;
-    this.dead = false;
+    // this.dead = false;
   }
 
   moveLeft() {
@@ -185,7 +168,21 @@ class MainCharacter {
     }
   }
 
-
+  // checkBulletCollision() {
+  //   arrayOfEnemies.forEach((enemy) => {
+  //     if (
+  //       enemy.x + 40 < mainCharacter.x + mainCharacter.width &&
+  //       enemy.x + enemy.width > mainCharacter.x + 80 &&
+  //       enemy.y + 120 < mainCharacter.y + mainCharacter.height &&
+  //       enemy.height + enemy.y > mainCharacter.y + 125
+  //     ) {
+  //       enemy.dead = true;
+  //       score++;
+  //       document.getElementById("score.counter").innerText = score;
+  //       console.log(score);
+  //     }
+  //   });
+  // }
 }
 mainCharacter = new MainCharacter(); // Create const of MainCharacter class
 
@@ -193,10 +190,11 @@ class Enemy {
   constructor(image) {
     this.x = 800;
     this.y = Math.floor(Math.random() * 167) + 153; // Random 'y' position between 153 and 320
-    this.speed = 1.5;
+    this.speed = Math.floor(Math.random() * 5) + 2;
     this.width = 59;
     this.height = 119;
     this.image = image;
+    this.dead = false;
   }
 
   updatePosition() {
@@ -210,21 +208,16 @@ class Enemy {
   checkMainCharacterCollision() {
     arrayOfEnemies.forEach((enemy) => {
       if (
-        (enemy.x +  40) < mainCharacter.x + mainCharacter.width &&
-        enemy.x + enemy.width > (mainCharacter.x + 80) &&
-        (enemy.y + 120) < mainCharacter.y + mainCharacter.height &&
-        enemy.height + enemy.y > (mainCharacter.y + 125)
+        enemy.x + 40 < mainCharacter.x + mainCharacter.width &&
+        enemy.x + enemy.width > mainCharacter.x + 80 &&
+        enemy.y + 120 < mainCharacter.y + mainCharacter.height &&
+        enemy.height + enemy.y > mainCharacter.y + 125
       ) {
-        console.log('You are dead!')
-        // pistachio.eaten = true;
-        // score++;
-        // document.getElementById("score-counter").innerText = score;
-        // console.log (score)
+        // deadSound.play
+        endGame = true;
       }
     });
-  };
-
-
+  }
 }
 enemy = new Enemy();
 
@@ -240,15 +233,12 @@ class Bullet {
   updatePosition() {
     this.x += this.speed;
   }
-
-
 }
+bullet = new Bullet();
 
 //EVENT LISTENERS - > window.onload
 
 window.onload = () => {
-  // const bullet = new Bullet(); // Create const of Bullet class
-
   document.getElementById("start-button").onclick = () => {
     startGame();
   };
