@@ -18,24 +18,23 @@ let enemy;
 
 let score = 0;
 
-backgroundImage = new Image();
-backgroundImage.src = "/images/canvas_background.png";
-
-mainCharacterImage = new Image();
-mainCharacterImage.src = "/images/main_character_img/stand_1.png";
-
-enemyImg = new Image();
-enemyImg.src = "/images/enemy1_img/enemy1_1.png";
-
-bulletImage = new Image();
-bulletImage.src = "/images/bullet.png";
-
 endGame = false;
 
-//FUNCIONES ****************
+backgroundImage = new Image();
+backgroundImage.src = "../images/canvas_background.png";
+
+mainCharacterImage = new Image();
+mainCharacterImage.src = "../images/main_character_img/stand_1.png";
+
+enemyImg = new Image();
+enemyImg.src = "../images/enemy1_img/enemy1_1.png";
+
+bulletImage = new Image();
+bulletImage.src = "../images/bullet.png";
+
+//FUNCTIONS ****************
 
 const startGame = () => {
-  // generateImages();
   createEnemies();
   updateCanvas();
 };
@@ -76,24 +75,26 @@ const clearCanvas = () => {
 
 const drawGameOver = () => {
   clearCanvas();
-  ctx.fillStyle = "white";
-  ctx.font = "100px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText("GAME OVER", 400, 225);
+  ctx.fillStyle = 'white';
+  ctx.font = '50px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('GAME OVER!', 400, 125);
+  ctx.fillText('Total Score: ' + score, 400, 225)
+  ctx.fillText('Another round?', 400, 325)
 };
 
 const drawScore = () => {
-  ctx.font = '30px Arial';
+  ctx.font = 'bold 35px monospace';
   ctx.fillStyle = 'white';
-  ctx.textAlign = 'center'
-  ctx.fillText('Score:' + score, 650, 80);
-}
+  ctx.textAlign = 'center';
+  ctx.fillText('Score:' + score, 400, 80);
+};
 
 // MAIN LOOP OF THE VIDEO GAME ***************
 
 const updateCanvas = () => {
   if (!endGame) {
-    ctx.drawImage(backgroundImage, 0, 0, 800, 450); // draw background
+    ctx.drawImage(backgroundImage, 0, 0, 800, 450);
 
     arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort(
       (a, b) => a.y - b.y
@@ -270,8 +271,6 @@ class Bullet {
       enemy.toDelete = true;
       this.toDelete = true;
       score++;
-      // document.getElementById("score.counter").innerText = score;
-      // console.log(score);
     }
   }
 }

@@ -11,24 +11,34 @@
       href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" href="/styles/normalize.css" as="style" />
-    <link rel="preload" href="/styles/style.css" as="style" />
-    <link rel="stylesheet" href="/styles/normalize.css" />
-    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="preload" href="./styles/normalize.css" as="style" />
+    <link rel="preload" href="./styles/style.css" as="style" />
+    <link rel="stylesheet" href="./styles/normalize.css" />
+    <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
-    <div class="arcade-img">
+    <div class="container">
       <h1>IronHack Project 1</h1>
       <div class="canvas">
         <canvas id="canvas" width="800" height="450"></canvas>
       </div>
-      <button id="start-button">Start Game</button>
+      <div class="button">
+        <button id="start-button">START GAME!</button>
+      </div>
       <footer>
-        <div>
+        <div class="footer">
           <h2>by Nacho Benito (2021)</h2>
+        </div>
+        <div class="rrss">
+          <a href="https://github.com/nachbr91" target="_blank">
+            <img class="github-logo" src="./images/github_icon.png" alt="GitHub logo" />
+          </a>
+          <a href="https://www.linkedin.com/in/nachobenitoroig/" target="_blank">
+            <img class="linkedin-logo" src="./images/linkedin_logo.png" alt="LinkedIn logo" />
+          </a>
         </div>
       </footer>
     </div>
-    <script src="/js/script.js"></script>
+    <script src="./js/script.js"></script>
   </body>
 </html>
