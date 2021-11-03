@@ -64,15 +64,17 @@ const updateEnemyPosition = () => {
   });
 };
 
-// const createBullets = () => {
-//   arrayOfBullets.push(new Bullet(bulletImage));
-// };
-
 const updateBulletPosition = () => {
   arrayOfBullets.forEach((bullet) => {
     bullet.updatePosition();
   });
 };
+
+const deleteBullet = () => {
+  arrayOfBullets = arrayOfBullets.filter((bullet) => {
+    !bullet.toDelete;
+  })
+}
 
 const clearCanvas = () => {
   ctx.clearRect(0, 0, 800, 450);
@@ -250,16 +252,19 @@ enemy = new Enemy();
 
 class Bullet {
   constructor() {
-    this.shoot = false;
     this.x = mainCharacter.x;
     this.y = mainCharacter.y + 50;
     this.speed = 10;
     this.width = 20;
     this.height = 30;
+    this.toDelete = false
   }
 
   updatePosition() {
     this.x += this.speed;
+    if (this.x > 800 && this.y > 450) {
+      this.toDelete = true;
+    }
   }
 
   draw() {
@@ -268,11 +273,6 @@ class Bullet {
     })
   }
 
-  // shootBullet() {
-  //   if (!this.shoot) {
-  //     ctx.drawImage(bulletImage, this.x, this.y, this.width, this.height);
-  //   }
-  // }
 }
 
 bullet = new Bullet();
