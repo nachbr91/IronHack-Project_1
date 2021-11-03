@@ -4,12 +4,14 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const arrayOfEnemies = [];
-
 let arrayOfCharacters = [];
 
-let backgroundImage = "";
-let mainCharacterImage = "";
-let enemyImg = "";
+let arrayOfBullets = [];
+
+let backgroundImage = '';
+let mainCharacterImage = '';
+let enemyImg = '';
+let bulletImage = ''
 
 let mainCharacter;
 let enemy;
@@ -22,6 +24,9 @@ mainCharacterImage.src = "/images/main_character_img/stand_1.png";
 
 enemyImg = new Image();
 enemyImg.src = "/images/enemy1_img/enemy1_1.png";
+
+bulletImage = new Image();
+bulletImage.src = '/images/bullet.png';
 
 endGame = false;
 
@@ -59,6 +64,16 @@ const updateEnemyPosition = () => {
   });
 };
 
+// const createBullets = () => {
+//   arrayOfBullets.push(new Bullet(bulletImage));
+// };
+
+const updateBulletPosition = () => {
+  arrayOfBullets.forEach((bullet) => {
+    bullet.updatePosition();
+  });
+};
+
 const clearCanvas = () => {
   ctx.clearRect(0, 0, 800, 450);
 };
@@ -89,6 +104,18 @@ const updateCanvas = () => {
       character.draw();
       character.updatePosition();
     });
+    arrayOfBullets.forEach((bullet) => {
+      bullet.draw();
+      bullet.updatePosition();
+    })
+
+    // arrayOfBullets.forEach((bullet) => {
+    //   if (!bullet.shoot) {
+    //     bullet.draw();
+    //     bullet.updatePosition(); 
+    //   }
+    // });
+
     mainCharacter.checkForBoundries();
     // mainCharacter.checkBulletCollision();
     enemy.checkMainCharacterCollision();
@@ -215,25 +242,39 @@ class Enemy {
       ) {
         // deadSound.play
         endGame = true;
-      }
+      };
     });
-  }
+  };
 }
 enemy = new Enemy();
 
 class Bullet {
   constructor() {
-    this.x = 0;
-    this.y = 0;
-    this.speed = 0;
-    this.width = 0;
-    this.height = 0;
+    this.shoot = false;
+    this.x = mainCharacter.x;
+    this.y = mainCharacter.y + 50;
+    this.speed = 10;
+    this.width = 20;
+    this.height = 30;
   }
 
   updatePosition() {
     this.x += this.speed;
   }
+
+  draw() {
+    arrayOfBullets.forEach((bullet) => {
+      ctx.drawImage(bulletImage, this.x, this.y, this.width, this.height);
+    })
+  }
+
+  // shootBullet() {
+  //   if (!this.shoot) {
+  //     ctx.drawImage(bulletImage, this.x, this.y, this.width, this.height);
+  //   }
+  // }
 }
+
 bullet = new Bullet();
 
 //EVENT LISTENERS - > window.onload
@@ -253,9 +294,10 @@ window.onload = () => {
     } else if (event.key === "ArrowDown") {
       mainCharacter.moveDown();
     } else if (event.key === "s") {
-      // bullet.speed = 10;
+      arrayOfBullets.push(new Bullet());
+      }
     }
-  });
+  );
 
   document.addEventListener("keyup", (event) => {
     if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
