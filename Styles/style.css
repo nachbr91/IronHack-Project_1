@@ -22,10 +22,33 @@ h2 {
   font-size: 2rem;
 }
 
-.canvas {
+.container {
   display: flex;
+  justify-content: center;
+}
+
+.canvas {
+  /* display: flex;
   justify-content: space-evenly;
-  vertical-align: middle;
+  vertical-align: middle; */
+  width: 800px;
+  height: 450px;
+  margin-left: 320px;
+}
+
+.instructions h2 {
+  font-size: 2rem;
+  margin-left: 10px;
+  margin-top: 80px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.instructions p {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-left: 10px;
+  margin-bottom: 50px;
 }
 
 .button {
