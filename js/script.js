@@ -125,37 +125,27 @@ const replay = () => {
 const updateCanvas = () => {
   if (!endGame) {
     ctx.drawImage(backgroundImage, 0, 0, 800, 450);
-
     arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort(
       (a, b) => a.y - b.y
     ); // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
-
     arrayOfCharacters.forEach((character) => {
       character.draw();
       character.updatePosition();
     });
-
     arrayOfBullets.forEach((bullet) => {
       bullet.draw();
       bullet.updatePosition();
     });
-
     arrayOfBullets.forEach((bullet) => {
       arrayOfEnemies.forEach((enemy) => {
         bullet.checkBulletCollision(enemy);
       });
     });
-
     mainCharacter.checkForBoundries();
-
     enemy.checkMainCharacterCollision();
-
     deleteEnemies();
-
     deleteBullet();
-
     drawScore();
-
     requestAnimationFrame(updateCanvas);
   } else {
     drawGameOver();
@@ -238,7 +228,7 @@ class Enemy {
   constructor(image) {
     this.x = 800;
     this.y = Math.floor(Math.random() * 167) + 153; // Random 'y' position between 153 and 320
-    this.speed = Math.floor(Math.random() * 8) + 5;
+    this.speed = Math.floor(Math.random() * 8) + 6;
     this.width = 59;
     this.height = 119;
     this.image = image;
@@ -270,7 +260,7 @@ enemy = new Enemy();
 
 class Bullet {
   constructor() {
-    this.x = mainCharacter.x;
+    this.x = mainCharacter.x + 30;
     this.y = mainCharacter.y + 50;
     this.speed = 10;
     this.width = 20;
@@ -293,9 +283,9 @@ class Bullet {
 
   checkBulletCollision(enemy) {
     if (
-      this.x < enemy.x + enemy.width &&
+      this.x < enemy.x + (enemy.width - 40) &&
       this.x + this.width > enemy.x &&
-      this.y < enemy.y + enemy.height &&
+      this.y < enemy.y + (enemy.height - 40) &&
       this.height + this.y > enemy.y
     ) {
       damageSound.play();
@@ -306,7 +296,7 @@ class Bullet {
   }
 }
 
-//EVENT LISTENERS - > window.onload
+//EVENT LISTENERS ********************
 
 window.onload = () => {
   document.getElementById("start-button").onclick = () => {
