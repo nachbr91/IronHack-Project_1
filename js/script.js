@@ -5,7 +5,6 @@ const ctx = canvas.getContext("2d");
 
 let arrayOfEnemies = [];
 let arrayOfCharacters = [];
-
 let arrayOfBullets = [];
 
 let backgroundImage = "";
@@ -32,30 +31,31 @@ enemyImg.src = "../images/enemy1_img/enemy1_1.png";
 bulletImage = new Image();
 bulletImage.src = "../images/bullet.png";
 
-const soundTrack = new Audio('../sound/soundtrack.mp3');
+const soundTrack = new Audio("../sound/soundtrack.mp3");
 soundTrack.volume = 0.2;
-soundTrack.preload = 'auto';
+soundTrack.preload = "auto";
 soundTrack.load();
 
-const gameOverSound = new Audio('../sound/game_over.mp3');
+const gameOverSound = new Audio("../sound/game_over.mp3");
 gameOverSound.volume = 0.2;
-gameOverSound.preload = 'auto';
+gameOverSound.preload = "auto";
 gameOverSound.load();
 
-const shootSound = new Audio('../sound/shoot.wav');
+const shootSound = new Audio("../sound/shoot.wav");
 shootSound.volume = 0.2;
-shootSound.preload = 'auto';
+shootSound.preload = "auto";
 shootSound.load();
 
-const damageSound = new Audio('../sound/damage_sound.wav');
+const damageSound = new Audio("../sound/damage_sound.wav");
 damageSound.volume = 0.5;
-damageSound.preload = 'auto';
+damageSound.preload = "auto";
 damageSound.load();
 
 //FUNCTIONS ****************
 
 const startGame = () => {
   soundTrack.play();
+  document.getElementById("start-button").style.display = "none";
   createEnemies();
   updateCanvas();
 };
@@ -98,19 +98,26 @@ const drawGameOver = () => {
   clearCanvas();
   soundTrack.pause();
   gameOverSound.play();
-  ctx.fillStyle = 'white';
-  ctx.font = '50px monospace';
-  ctx.textAlign = 'center';
-  ctx.fillText('GAME OVER!', 400, 125);
-  ctx.fillText('Total Score: ' + score, 400, 225)
-  ctx.fillText('Another round?', 400, 325)
+  ctx.fillStyle = "white";
+  ctx.font = "50px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText("GAME OVER!", 400, 125);
+  ctx.fillText("Total Score: " + score, 400, 225);
+  ctx.fillText("Another round?", 400, 325);
+  document.getElementById("replay-button").style.display = "initial";
 };
 
 const drawScore = () => {
-  ctx.font = 'bold 35px monospace';
-  ctx.fillStyle = 'white';
-  ctx.textAlign = 'center';
-  ctx.fillText('Score:' + score, 400, 80);
+  ctx.font = "bold 35px monospace";
+  ctx.fillStyle = "white";
+  ctx.textAlign = "center";
+  ctx.fillText("Score:" + score, 400, 80);
+};
+
+const replay = () => {
+  document.getElementById("replay-button").onclick = () => {
+    startGame();
+  };
 };
 
 // MAIN LOOP OF THE VIDEO GAME ***************
@@ -153,6 +160,7 @@ const updateCanvas = () => {
   } else {
     drawGameOver();
   }
+  replay();
 };
 
 //CLASSES *******************
@@ -224,7 +232,7 @@ class MainCharacter {
     }
   }
 }
-mainCharacter = new MainCharacter(); // Create const of MainCharacter class
+mainCharacter = new MainCharacter();
 
 class Enemy {
   constructor(image) {
@@ -303,6 +311,13 @@ class Bullet {
 window.onload = () => {
   document.getElementById("start-button").onclick = () => {
     startGame();
+  };
+  document.getElementById("replay-button").style.display = "none";
+  document.getElementById("sound-button-on").onclick = () => {
+    soundTrack.play();
+  };
+  document.getElementById("sound-button-off").onclick = () => {
+    soundTrack.pause();
   };
 
   document.addEventListener("keydown", (event) => {

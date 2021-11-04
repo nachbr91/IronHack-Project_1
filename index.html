@@ -17,37 +17,57 @@
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
-    <h1>IronHack Project 1</h1>
+    <h1>Iron Slug</h1>
     <div class="container">
-      <div class="sound-button">
-        
-      </div>
-      <div class="canvas">
-        <canvas id="canvas" width="800" height="450"></canvas>
-      </div>
       <div class="instructions">
         <h2>Instructions</h2>
         <p>Press the arrow keys to move!</p>
         <p>Press S key to shoot!</p>
         <p>Let's play and kill them all!</p>
       </div>
-    </div>
-      <div class="button">
-        <button id="start-button">START GAME!</button>
+      <div class="canvas">
+        <canvas id="canvas" width="800" height="450"></canvas>
       </div>
-      <footer>
-        <div class="footer">
-          <h2>by Nacho Benito (2021)</h2>
+      <div id="sound-buttons">
+        <div>
+          <button id="sound-button-on">
+            <img src="./images/sound_on.png" alt="Sound On" />
+          </button>
         </div>
-        <div class="rrss">
-          <a href="https://github.com/nachbr91" target="_blank">
-            <img class="github-logo" src="./images/github_icon.png" alt="GitHub logo" />
-          </a>
-          <a href="https://www.linkedin.com/in/nachobenitoroig/" target="_blank">
-            <img class="linkedin-logo" src="./images/linkedin_logo.png" alt="LinkedIn logo" />
-          </a>
+        <div>
+          <button id="sound-button-off">
+            <img src="./images/sound_off.png" alt="Sound Off" />
+          </button>
         </div>
-      </footer>
+      </div>
+    </div>
+    <div class="button">
+      <button id="start-button">START GAME!</button>
+    </div>
+    <div class="button">
+      <button id="replay-button">REPLAY!</button>
+    </div>
+    <footer>
+      <div class="footer">
+        <h2>by Nacho Benito (2021)</h2>
+      </div>
+      <div class="rrss">
+        <a href="https://github.com/nachbr91" target="_blank">
+          <img
+            class="github-logo"
+            src="./images/github_icon.png"
+            alt="GitHub logo"
+          />
+        </a>
+        <a href="https://www.linkedin.com/in/nachobenitoroig/" target="_blank">
+          <img
+            class="linkedin-logo"
+            src="./images/linkedin_logo.png"
+            alt="LinkedIn logo"
+          />
+        </a>
+      </div>
+    </footer>
     <script src="./js/script.js"></script>
   </body>
 </html>
