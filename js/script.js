@@ -19,6 +19,8 @@ let score = 0;
 
 endGame = false;
 
+let createEnemyIntervalId;
+
 backgroundImage = new Image();
 backgroundImage.src = "./images/canvas_background.png";
 
@@ -56,12 +58,15 @@ damageSound.load();
 const startGame = () => {
   soundTrack.play();
   document.getElementById("start-button").style.display = "none";
+  document.getElementById("replay-button").style.display = "none";
+  endGame = false;
+  clearCanvas();
   createEnemies();
   updateCanvas();
 };
 
 const createEnemies = () => {
-  const createEnemy = setInterval(() => {
+   createEnemyIntervalId = setInterval(() => {
     arrayOfEnemies.push(new Enemy(enemyImg));
   }, 1000);
 };
@@ -96,6 +101,10 @@ const clearCanvas = () => {
 
 const drawGameOver = () => {
   clearCanvas();
+  clearInterval(createEnemyIntervalId);
+  arrayOfEnemies = [];
+  arrayOfCharacters = [];
+  arrayOfBullets = [];
   soundTrack.pause();
   gameOverSound.play();
   ctx.fillStyle = "white";
@@ -114,43 +123,46 @@ const drawScore = () => {
   ctx.fillText("Score:" + score, 400, 80);
 };
 
-const replay = () => {
-  document.getElementById("replay-button").onclick = () => {
-    startGame();
-  };
-};
-
 // MAIN LOOP OF THE VIDEO GAME ***************
 
 const updateCanvas = () => {
   if (!endGame) {
     ctx.drawImage(backgroundImage, 0, 0, 800, 450);
+
     arrayOfCharacters = [...arrayOfEnemies, mainCharacter].sort(
       (a, b) => a.y - b.y
-    ); // sort array, por altura de Y y los que estan mas abajo se le dice que pinte y pintara por orden
+    );
+
     arrayOfCharacters.forEach((character) => {
       character.draw();
       character.updatePosition();
     });
+
     arrayOfBullets.forEach((bullet) => {
       bullet.draw();
       bullet.updatePosition();
     });
+
     arrayOfBullets.forEach((bullet) => {
       arrayOfEnemies.forEach((enemy) => {
         bullet.checkBulletCollision(enemy);
       });
     });
+
     mainCharacter.checkForBoundries();
+
     enemy.checkMainCharacterCollision();
+
     deleteEnemies();
+
     deleteBullet();
+
     drawScore();
+
     requestAnimationFrame(updateCanvas);
   } else {
     drawGameOver();
   }
-  replay();
 };
 
 //CLASSES *******************
@@ -249,7 +261,7 @@ class Enemy {
         enemy.x + 40 < mainCharacter.x + mainCharacter.width &&
         enemy.x + enemy.width > mainCharacter.x + 80 &&
         enemy.y + 120 < mainCharacter.y + mainCharacter.height &&
-        enemy.height + enemy.y > mainCharacter.y + 125
+        enemy.height + enemy.y > mainCharacter.y + 123
       ) {
         endGame = true;
       }
@@ -303,6 +315,9 @@ window.onload = () => {
     startGame();
   };
   document.getElementById("replay-button").style.display = "none";
+  document.getElementById("replay-button").onclick = () => {
+    startGame();
+  }
   document.getElementById("sound-button-on").onclick = () => {
     soundTrack.play();
   };
