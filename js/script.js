@@ -31,7 +31,7 @@ enemyImg.src = "./images/enemy1_img/enemy1_1.png";
 bulletImage = new Image();
 bulletImage.src = "./images/bullet.png";
 
-const soundTrack = new Audio("../sound/soundtrack.mp3");
+const soundTrack = new Audio("./sound/soundtrack.mp3");
 soundTrack.volume = 0.2;
 soundTrack.preload = "auto";
 soundTrack.load();
