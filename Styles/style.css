@@ -4,7 +4,7 @@ html {
 
 body {
   font-family: "Press Start 2P", cursive;
-  background-image: url("/images/css_background.jpeg");
+  background-image: url("../images/css_background.jpeg");
   background-size: cover;
   background-repeat: no-repeat;
 }
