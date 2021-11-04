@@ -60,13 +60,14 @@ const startGame = () => {
   document.getElementById("start-button").style.display = "none";
   document.getElementById("replay-button").style.display = "none";
   endGame = false;
+  score = 0;
   clearCanvas();
   createEnemies();
   updateCanvas();
 };
 
 const createEnemies = () => {
-   createEnemyIntervalId = setInterval(() => {
+  createEnemyIntervalId = setInterval(() => {
     arrayOfEnemies.push(new Enemy(enemyImg));
   }, 1000);
 };
@@ -317,12 +318,13 @@ window.onload = () => {
   document.getElementById("replay-button").style.display = "none";
   document.getElementById("replay-button").onclick = () => {
     startGame();
-  }
+  };
   document.getElementById("sound-button-on").onclick = () => {
     soundTrack.play();
   };
   document.getElementById("sound-button-off").onclick = () => {
     soundTrack.pause();
+    gameOverSound.pause();
   };
 
   document.addEventListener("keydown", (event) => {
