@@ -20,33 +20,33 @@ let score = 0;
 endGame = false;
 
 backgroundImage = new Image();
-backgroundImage.src = "../images/canvas_background.png";
+backgroundImage.src = "./images/canvas_background.png";
 
 mainCharacterImage = new Image();
-mainCharacterImage.src = "../images/main_character_img/stand_1.png";
+mainCharacterImage.src = "./images/main_character_img/stand_1.png";
 
 enemyImg = new Image();
-enemyImg.src = "../images/enemy1_img/enemy1_1.png";
+enemyImg.src = "./images/enemy1_img/enemy1_1.png";
 
 bulletImage = new Image();
-bulletImage.src = "../images/bullet.png";
+bulletImage.src = "./images/bullet.png";
 
 const soundTrack = new Audio("../sound/soundtrack.mp3");
 soundTrack.volume = 0.2;
 soundTrack.preload = "auto";
 soundTrack.load();
 
-const gameOverSound = new Audio("../sound/game_over.mp3");
+const gameOverSound = new Audio("./sound/game_over.mp3");
 gameOverSound.volume = 0.2;
 gameOverSound.preload = "auto";
 gameOverSound.load();
 
-const shootSound = new Audio("../sound/shoot.wav");
+const shootSound = new Audio("./sound/shoot.wav");
 shootSound.volume = 0.2;
 shootSound.preload = "auto";
 shootSound.load();
 
-const damageSound = new Audio("../sound/damage_sound.wav");
+const damageSound = new Audio("./sound/damage_sound.wav");
 damageSound.volume = 0.5;
 damageSound.preload = "auto";
 damageSound.load();
