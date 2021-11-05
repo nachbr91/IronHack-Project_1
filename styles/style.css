@@ -3,8 +3,8 @@ html {
 }
 
 body {
-  font-family: "Press Start 2P", monospace, sans-serif;
-  background-image: url("../images/css_background.jpeg");
+  font-family: 'Press Start 2P', monospace, sans-serif;
+  background-image: url('../images/css_background.jpeg');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -30,12 +30,15 @@ h2 {
 .canvas {
   width: 800px;
   height: 450px;
-  margin-right: 90px;
+}
+
+.instructions {
+  width: 20vw;
 }
 
 .instructions h2 {
   font-size: 2rem;
-  margin: 120px 50px 50px 30px;
+  margin: 70px 75px 50px 30px;
   text-align: center;
 }
 
@@ -54,11 +57,12 @@ h2 {
   margin-top: 15px;
 }
 
-#sound-buttons {
+.sound-buttons {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-right: 160px;
+  width: 18vw;
+  margin-left: 30px;
 }
 
 #sound-button-on img {
